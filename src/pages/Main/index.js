@@ -93,12 +93,14 @@ const Main = () => {
         left: 0,
         width: '230px'
       }}>
+        
         <div className="logo" />
         <Menu theme="light" mode="inline" defaultSelectedKeys={['1']} >
 
           <div>
             <Avatar shape="square" size={52} src="https://www.grupovicoabrasil.com.br/site/views/images/header_logo2.png" style={{ width: 200 }} />
           </div>
+          
           <div>
             <Upload {...props} name="file"  >
               <Button style={{ width: 194, marginTop: 10 }} >
