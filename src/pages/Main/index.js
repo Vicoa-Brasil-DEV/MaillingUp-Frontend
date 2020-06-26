@@ -1,10 +1,11 @@
 import React from 'react';
-import { Layout, Menu, Select, InputNumber, Avatar, Button, Table } from 'antd';
+import { Layout, Menu, Select, InputNumber, Avatar, Button, Table, Upload, message, } from 'antd';
 import {
-  FilterFilled,
+  FilterFilled, UploadOutlined
 } from '@ant-design/icons';
 
 import { Link } from 'react-router-dom'
+import Form from 'antd/lib/form/Form';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Option, OptGroup } = Select;
@@ -16,6 +17,26 @@ function onChange(value) {
   console.log('changed', value);
 }
 
+// Upload props
+const props = {
+  name: 'file',
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+
+// END Upload props
 const dataSource = [
   {
     key: '1',
@@ -65,19 +86,28 @@ const Main = () => {
   return (
     <Layout>
       <Sider style={{
+        background: '#fff',
         overflow: 'auto',
         height: '100%',
         position: 'fixed',
         left: 0,
+        width: '230px'
       }}>
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} >
+        <Menu theme="light" mode="inline" defaultSelectedKeys={['1']} >
 
           <div>
             <Avatar shape="square" size={52} src="https://www.grupovicoabrasil.com.br/site/views/images/header_logo2.png" style={{ width: 200 }} />
           </div>
+          <div>
+            <Upload {...props} name="file"  >
+              <Button style={{ width: 194, marginTop: 10 }} >
+                <UploadOutlined /> Carregar CSV
+              </Button>
+            </Upload>
+          </div>
 
-          <Select defaultValue="Selecione" style={{ width: 200, marginTop: 10 }} onChange={handleChange}>
+          <Select defaultValue="Selecione" style={{ width: 194, marginTop: 10 }} onChange={handleChange}>
             <Option> Selecione </Option>
             <OptGroup label="Stand">
               <Option value="Stand_Alto">Stand Alto</Option>
@@ -106,15 +136,15 @@ const Main = () => {
           <InputNumber size="small" min={0} defaultValue={0} onChange={onChange} style={{ marginLeft: 6 }} />
           <InputNumber size="small" min={0} defaultValue={0} onChange={onChange} style={{ marginLeft: 6 }} />
 
-          
-          <Select defaultValue="Ordenar por" style={{ width: 190, marginTop: 50 }} onChange={handleChange}>
-              <Option value="Limite_ord">Limite</Option>
-              <Option value="Margem_ord">Margem</Option>
-              <Option value="Seguro_ord">Seguro</Option>
-              <Option value="Prio_ord">( Limite / Margem )</Option>
-            
+
+          <Select defaultValue="Ordenar por" style={{ width: 194, marginTop: 50 }} onChange={handleChange}>
+            <Option value="Limite_ord">Limite</Option>
+            <Option value="Margem_ord">Margem</Option>
+            <Option value="Seguro_ord">Seguro</Option>
+            <Option value="Prio_ord">( Limite / Margem )</Option>
+
           </Select>
-        
+
           <div>
             <InputNumber size="small" min={0} defaultValue={0} onChange={onChange} style={{ marginLeft: 6, marginTop: 5 }} />
             <InputNumber size="small" min={0} defaultValue={0} onChange={onChange} style={{ marginLeft: 6, marginTop: 5 }} />
@@ -142,19 +172,19 @@ const Main = () => {
 
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
-        <Header className="site-layout-background" style={{ padding: 0, height: 62 }} >
-          <Button style={{position: "absolute",right: 15, top: 15}}>
+        <Header className="site-layout-background" style={{ padding: 0, height: 62, background: '#fff' }} >
+          <Button style={{ position: "absolute", right: 15, top: 15, background: 'red', color: '#fff' }}>
             <Link to="/">Logout</Link>
-            </Button>
+          </Button>
         </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <div className="site-layout-background" style={{ padding: 5, textAlign: 'center' }}>
-<Table dataSource={dataSource} columns={columns}  />
-<label > Registros: xxx </label>
-        </div>
+            <Table dataSource={dataSource} columns={columns} />
+            <label > Registros: xxx </label>
+          </div>
         </Content>
         <center>
-        <Footer style={{ textAlign: 'center' , bottom:0, position: "flex", flex: 1   }}>Grupo Vicoa Brasil ©2020</Footer>
+          <Footer style={{ textAlign: 'center', bottom: 0, position: "flex", flex: 1 }}>Grupo Vicoa Brasil ©2020</Footer>
         </center>
       </Layout>
     </Layout>
